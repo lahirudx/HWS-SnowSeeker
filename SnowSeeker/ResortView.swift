@@ -15,6 +15,8 @@ struct ResortView: View {
     
     @State private var selectedFacility: Facility?
     @State private var showingFacility = false
+    
+    @EnvironmentObject var favorites: Favorites
 
     var body: some View {
         ScrollView {
@@ -57,6 +59,16 @@ struct ResortView: View {
                 }
                 .padding(.horizontal)
             }
+            
+            Button(favorites.contains(resort) ? "Remove from Favorites" : "Add to Favorites") {
+                if favorites.contains(resort) {
+                    favorites.remove(resort)
+                } else {
+                    favorites.add(resort)
+                }
+            }
+            .buttonStyle(.borderedProminent)
+            .padding()
         }
         .navigationTitle("\(resort.name), \(resort.country)")
         .navigationBarTitleDisplayMode(.inline)
@@ -69,4 +81,5 @@ struct ResortView: View {
 
 #Preview {
     ResortView(resort: Resort.example)
+        .environmentObject(Favorites())
 }
